@@ -1,0 +1,14 @@
+# Backend - Java
+/backend-pfe/target/
+/backend-pfe/.idea/
+/backend-pfe/*.iml
+
+# Frontend - Node
+/frontend-pfe/node_modules/
+/frontend-pfe/.env
+/frontend-pfe/dist/
+/frontend-pfe/build/
+
+# Général
+*.log
+.DS_Store
