@@ -2,23 +2,32 @@ package org.example.pfe.dto;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FluxStatusDTO {
     private String nomFlux;
     private String status;
-    private LocalDateTime dernierChargement; // Ajout de l'attribut pour la date de chargement
+    private LocalDateTime dernierChargement;
+    private List<LocalDateTime> tendances; // 🔥 Ajoute cette liste
 
-    // Constructeur par défaut (utile pour Jackson)
     public FluxStatusDTO() {}
 
-    // Constructeur avec paramètres (nomFlux, status, dernierChargement)
     public FluxStatusDTO(String nomFlux, String status, LocalDateTime dernierChargement) {
         this.nomFlux = nomFlux;
         this.status = status;
         this.dernierChargement = dernierChargement;
     }
 
-    // Getter et Setter pour nomFlux
+    // 🔧 👉 Ajoute ce constructeur à 4 paramètres :
+    public FluxStatusDTO(String nomFlux, String status, LocalDateTime dernierChargement, List<LocalDateTime> tendances) {
+        this.nomFlux = nomFlux;
+        this.status = status;
+        this.dernierChargement = dernierChargement;
+        this.tendances = tendances;
+    }
+
+    // Getters et Setters
+
     public String getNomFlux() {
         return nomFlux;
     }
@@ -27,7 +36,6 @@ public class FluxStatusDTO {
         this.nomFlux = nomFlux;
     }
 
-    // Getter et Setter pour status
     public String getStatus() {
         return status;
     }
@@ -36,12 +44,19 @@ public class FluxStatusDTO {
         this.status = status;
     }
 
-    // Getter et Setter pour dernierChargement
     public LocalDateTime getDernierChargement() {
         return dernierChargement;
     }
 
     public void setDernierChargement(LocalDateTime dernierChargement) {
         this.dernierChargement = dernierChargement;
+    }
+
+    public List<LocalDateTime> getTendances() {
+        return tendances;
+    }
+
+    public void setTendances(List<LocalDateTime> tendances) {
+        this.tendances = tendances;
     }
 }

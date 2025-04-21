@@ -93,11 +93,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
 
@@ -108,12 +106,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS géré directement dans Spring Security
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // Permet l'accès sans authentification à toutes les routes /api/auth/*
+
+                        .requestMatchers("/api/auth/**").permitAll() // Permet l'accès sans authentification à toutes les routes /api/auth/*
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/analyst-op/**").hasAuthority("ANALYSTE_OP")
+                        // CORRECTION FINALE: Utiliser ANALYST_OP sans le préfixe ROLE_
+                        .requestMatchers("/api/analyst-op/**").hasRole("ANALYST_OP")
+                        .requestMatchers("/api/flux/status").hasRole("ANALYST_OP")
+                        .requestMatchers("/api/flux/trends").hasRole("ANALYST_OP")
+                        .requestMatchers("/api/flux/count").hasRole("ANALYST_OP")
                         .requestMatchers("/api/analyst-biz/**").hasAuthority("ANALYSTE_BUSINESS")
                         .anyRequest().authenticated() // Les autres requêtes nécessitent une authentification
                 )
@@ -150,7 +153,6 @@ public class SecurityConfig {
         corsConfig.addAllowedOrigin("http://localhost:3000"); // Autorise l'origine spécifique (peut être ajusté selon ton domaine frontend)
         corsConfig.addAllowedHeader("*"); // Autorise tous les en-têtes
         corsConfig.addAllowedMethod("*"); // Autorise toutes les méthodes HTTP (GET, POST, OPTIONS, etc.)
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig); // Applique la configuration sur toutes les routes
         return source;
